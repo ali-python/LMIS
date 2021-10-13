@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+{% block menu_customer %}active{% endblock %}
+{% block submenu_create_customer %}active{% endblock %}
+{% block content %}
+
+<div class="col-md-6">
+    <br>
+    <a href="#"><button id="back-customer" type="button" class="btn btn-primary" id="load" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i>Processing">User List</button></a>
+    <br><br><br>
+    <div class="content-panel">
+        <h3 class="text-center">User Register</h3>
+        <div class="panel-body">
+            <form class="" method="post" action="{% url 'common:register' %}">
+            <div class="login-wrap">
+                {% if form.errors or form.non_field_errors %}
+                    <div class="error-alert">
+                        <i class="fa fa-warning pull-center"></i>
+                    </div>
+                {% endif %}
+                {% csrf_token %}
+                {% if form.non_field_errors %}
+                    <div>
+                        {{ form.non_field_errors }}
+                    </div>
+                {% endif %}
+                <h5>Register a New User</h5>
+                <label class="btn btn-primary" for="image_1">
+                <input type="file" id="image_1" name="image_1" class=" col-lg-3 pull-left" style="display:none" title="Image 1"  onchange="$('#upload-file-info').html(this.files[0].name)">
+                Upload Profile Pic
+                <span class='label label-info' id="upload-file-info"></span>
+            </label><br><br>
+
+                <input type="text" class="form-control" placeholder="Username" name="username" value="{{ username }}" autofocus>
+                {% if form.errors %}
+                    {{ form.errors.username }}
+                {% endif %}
+                <br>
+                <input type="text" class="form-control user_type" name="user_type" placeholder="User Designation" list="unit-list">
+                <datalist id="unit-list">
+                    <option value="Director"></option>
+                    <option value="DHO"></option>
+                    <option value="Store Keeper"></option>
+                </datalist> <br>
+                <input type="text" class="form-control" placeholder="Address" name="address" autofocus><br>
+                <input type="text" class="form-control" placeholder="Office Address" name="office_address" autofocus><br>
+                <input type="text" class="form-control" placeholder="City" name="city" autofocus><br>
+                <input type="text" class="form-control" placeholder="Phone / Mobile" name="phone_no" autofocus><br>
+                <input type="password" class="form-control" name="password1" placeholder="Password" value="{{ password1 }}">
+                {% if form.errors %}
+                    {{ form.errors.password1  }}
+                {% endif %}
+                <br>
+                <input type="password" class="form-control" name="password2" placeholder="Confirm Password" value="{{ password2 }}">
+                {% if form.errors %}
+                    {{ form.errors.password2  }}
+                {% endif %}
+                <br>
+                <button class="btn btn-primary btn-block" type="submit"><i class="fa fa-lock"></i> Register</button>
+            </div>
+        </form>
+        </div>
+    </div>
+</div>
+<script>
+         $(document).ready (function () {
+             $('.product-sub-btn').on ('click', function () {
+                 $(this).addClass('disabled');
+                 $(this).html('<i class="fa fa-circle-o-notch fa-spin"></i> Loading...');
+                 var error= false;
+
+                 if ($('.customer_name').val()== "") {
+                     $('.customer_name_error').show();
+                     error = true;
+                 }
+                 else
+                 {
+                     $('.customer_name_error').hide();
+                 }
+                 if ($('.customer_phone').val()== "") {
+                     $('.customer_phone_error').show();
+                     error = true;
+                 }
+                 else
+                 {
+                     $('.customer_phone_error').hide();
+                 }
+                 if (error == false) {
+                     {% for customer  in customers%}
+                         if ($('.customer_phone').val() == '{{ customer.customer_phone }}') {
+                             $('.customer_exisit').show();
+                             $('.product-sub-btn').removeClass('disabled');
+                             $('.product-sub-btn').html('Save Customer');
+                             return;
+                         }
+                     {% endfor %}
+                 }
+                 if (error == false) {
+                     $('.add-customer-form').submit();
+                 }
+                 else
+                 {
+                     $(this).removeClass('disabled');
+                     $(this).html('Add Customer');
+                     return;
+                 }
+
+             });
+         });
+
+         $(".customer_name").keyup (function () {
+             $('.customer_name_error').hide();
+
+         });
+         $(".customer_phone").keyup(function () {
+             $('.customer_phone_error').hide();
+             checkDec(this);
+         });
+         function checkDec(el){
+             var ex = /^[0-9]+\.?[0-9]*$/;
+             if(ex.test(el.value)==false){
+                 el.value = el.value.substring(0,el.value.length - 1);
+             }
+         }
+    </script>
+
+
+{% endblock %}

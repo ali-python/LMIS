@@ -26,6 +26,8 @@ class UserProfile(models.Model):
         max_length=100, choices=USER_TYPES, default=USER_TYPE_DIRECTOR
     )
     address = models.TextField(max_length=512, blank=True, null=True)
+    office_address = models.TextField(max_length=512, blank=True, null=True)
+    city = models.TextField(max_length=512, blank=True, null=True)
     phone_no = models.CharField(max_length=13, blank=True, null=True)
     mobile_no = models.CharField(max_length=13, blank=True, null=True)
     picture = models.ImageField(
@@ -33,6 +35,7 @@ class UserProfile(models.Model):
     )
     date_of_birth = models.DateField(blank=True, null=True)
     status = models.BooleanField(default=True)
+    dated =models.DateField(default=timezone.now, blank=True, null=True)
 
     def __unicode__(self):
         return self.user.username

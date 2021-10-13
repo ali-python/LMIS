@@ -11,7 +11,7 @@ class CompanyAdmin(admin.ModelAdmin):
 
 class ProductAdmin(admin.ModelAdmin):
     list_display = (
-        '__unicode__', 'product_name','UNIT_TYPE_QUANTITY',
+        '__str__', 'product_name','UNIT_TYPE_QUANTITY',
         'quantity', 'retail_price', 'consumer_price'
     )
     search_fields = (
@@ -66,10 +66,14 @@ class PurchasedProductAdmin(admin.ModelAdmin):
 
 class StockInAdmin(admin.ModelAdmin):
     list_display = (
-        '__unicode__', 'product', 'quantity', 'price_per_item',
+        '__str__', 'product', 'quantity', 'price_per_item',
         'total_amount', 'dated_order','stock_expiry'
     )
     search_fields = ('product__name','stock_expiry','dated_order')
+
+    @staticmethod
+    def product(obj):
+        return obj.product_name if obj.product_name else ''
 
 
 class StockOutAdmin(admin.ModelAdmin):
@@ -82,7 +86,7 @@ class StockOutAdmin(admin.ModelAdmin):
     def invoice_no(obj):
         return obj.invoice.bill_no if obj.invoice else ''
 
-# admin.site.register(Company, CompanyAdmin)
+admin.site.register(Company, CompanyAdmin)
 admin.site.register(Product, ProductAdmin)
 admin.site.register(ProductDetail, ProductDetailAdmin)
 admin.site.register(PurchasedProduct, PurchasedProductAdmin)

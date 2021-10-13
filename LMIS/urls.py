@@ -17,9 +17,11 @@ from django.contrib import admin
 from django.urls import path, include
 from common.views import HomePageView
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('common/', include(('common.urls', 'common'), namespace='common')),
+    path('inventory/', include(('inventory.urls', 'inventory'), namespace='inventory')),
     # path('japan/inventory/', include(('japan_inventory.urls', 'japan_inventory'), namespace='japan_inventory')),
     # path('philip/inventory/', include(('philip_inventory.urls', 'philip_inventory'), namespace='philip_inventory')),
     # path('pak/inventory/', include(('pak_inventory.urls', 'pak_inventory'), namespace='pak_inventory')),

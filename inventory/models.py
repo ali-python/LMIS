@@ -10,7 +10,7 @@ from django.utils import timezone
 
 class Company(models.Model):
 	name = models.CharField(max_length=100, unique=True)
-	dated = models.DateField(blank=True, null=True)
+	dated = models.DateField(default=timezone.now, null=True, blank=True)
 
 class Product(models.Model):
     UNIT_TYPE_KG = 'Kilogram'
@@ -33,7 +33,7 @@ class Product(models.Model):
     product_name = models.CharField(max_length=100, unique=True)
     status_available = models.BooleanField(default=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.product_name
 
     def total_items(self):
@@ -102,7 +102,7 @@ class StockIn(models.Model):
     dated_order = models.DateField(blank=True, null=True)
     stock_expiry = models.DateField(blank=True, null=True)
 
-    def __unicode__(self):
+    def __str__ (self):
         return self.product.product_name
 
 
